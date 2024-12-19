@@ -1,0 +1,19 @@
+ELŐTERV:
+1,Feladat elosztás
+Bejelentkezés - Papp Dominik (Dec. 23 max)
+Regisztráció - Mayer Marcell (Dec.26 max)
+Bejegyzés írás - Ádám Nándor (Dec. 26 max)
+Bejegyzés tárolás - Papp Dominik (Dec. 27 max)
+Dokumentáció:
+-fejlesztői: MM
+-felhasználói:PDD
+-PPT: ÁN
+2,Grafikai kinézet:
+Pl: Bejelentkezés
+|------------------------|
+|Bejelentkezés           
+|------------------------|
+|Felhasználónév:     	 
+|		         
+|Jelszó:		 
+|------------------------|
