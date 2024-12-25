@@ -83,3 +83,41 @@ if siker == 1:
                     for bejegyzesek in torlesilista:
                         kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']}\n")
                 print("A bejegyzés törölve.")
+        #Bejegyzések módosítása
+        elif bejegyzeskezelőkerdes == 3:
+            kiemelés("Bejegyzés Módosító")
+            bejegyzéseklista = []
+            with open('bejegyzesek.txt', encoding="utf-8") as kimenet:
+                for sor in kimenet:
+                    bejegyzeselemek = sor.strip().split(';')
+                    bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2]}
+                    bejegyzéseklista.append(bejegyzesek)
+            #Bejegyzés címek kíírása
+            print("Bejegyzések(cím szerint):")
+            for bejegyzesek in bejegyzéseklista:
+                print(f"- {bejegyzesek['Cím']}")
+            modositaskerdes = input("Melyik bejegyzést szeretnéd módosítani?\nVálasz: ")
+            #Cím szerint kiválasztott bejegyzés módosítása
+            for bejegyzesek in bejegyzéseklista:
+                if bejegyzesek['Cím'] == modositaskerdes:
+                    print(f"Címe: {bejegyzesek['Cím']}")
+                    print(f"Leírása: {bejegyzesek['Leírás']}")
+                    print(f"Dátuma: {bejegyzesek['Dátum']}")
+                    #Ellenörzés hogy nem semmit adtunk meg és új érték megadás
+                    ujcim = input(f"Add meg az új címet: ")
+                    if ujcim.strip() == "":
+                        ujcim = bejegyzesek['Cím']
+                    bejegyzesek['Cím'] = ujcim
+                    ujleiras = input(f"Add meg az új leírást: ")
+                    if ujleiras.strip() == "":
+                        ujleiras = bejegyzesek['Leírás']
+                    bejegyzesek['Leírás'] = ujleiras
+                    ujdatum = input(f"Add meg az új dátumot: ")
+                    if ujdatum.strip() == "":
+                        ujdatum = bejegyzesek['Dátum']
+                    bejegyzesek['Dátum'] = ujdatum
+            #Fájlba mentés
+            with open('bejegyzesek.txt', 'w', encoding="utf-8") as kimenet:
+                for bejegyzesek in bejegyzéseklista:
+                    kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']}\n")
+            print("A bejegyzés módosítva.")
