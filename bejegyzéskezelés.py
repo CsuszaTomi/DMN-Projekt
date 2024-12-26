@@ -46,8 +46,8 @@ if siker == 1:
         kiemelés("Sikeres regisztráció!")
     #Bejegyzések
     bejegyzeskezelőkerdes = 0
-    kiemelés("Bejegyzés Kezelő")
     if kerdes == "b":
+        kiemelés("Bejegyzés Kezelő")
         bejegyzeskezelőkerdes = int(input("Mit szeretnél csinálni a bejegyzésekkel?\nÚjjat írni(1)\nTörölni(2)\nMódosítani(3)\nLezárni(4)\nVálasztás: "))
         #Bejegyzések írása
         if bejegyzeskezelőkerdes == 1:
@@ -90,34 +90,69 @@ if siker == 1:
             with open('bejegyzesek.txt', encoding="utf-8") as kimenet:
                 for sor in kimenet:
                     bejegyzeselemek = sor.strip().split(';')
-                    bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2]}
+                    if len(bejegyzeselemek) == 4:
+                        bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': bejegyzeselemek[3]}
+                    else:
+                        bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': 'Nem'}
                     bejegyzéseklista.append(bejegyzesek)
             #Bejegyzés címek kíírása
             print("Bejegyzések(cím szerint):")
             for bejegyzesek in bejegyzéseklista:
-                print(f"- {bejegyzesek['Cím']}")
+                print(f"- {bejegyzesek['Cím']} (Lezárt: {bejegyzesek['Lezárt']})")
             modositaskerdes = input("Melyik bejegyzést szeretnéd módosítani?\nVálasz: ")
             #Cím szerint kiválasztott bejegyzés módosítása
             for bejegyzesek in bejegyzéseklista:
                 if bejegyzesek['Cím'] == modositaskerdes:
-                    print(f"Címe: {bejegyzesek['Cím']}")
-                    print(f"Leírása: {bejegyzesek['Leírás']}")
-                    print(f"Dátuma: {bejegyzesek['Dátum']}")
-                    #Ellenörzés hogy nem semmit adtunk meg és új érték megadás
-                    ujcim = input(f"Add meg az új címet: ")
-                    if ujcim.strip() == "":
-                        ujcim = bejegyzesek['Cím']
-                    bejegyzesek['Cím'] = ujcim
-                    ujleiras = input(f"Add meg az új leírást: ")
-                    if ujleiras.strip() == "":
-                        ujleiras = bejegyzesek['Leírás']
-                    bejegyzesek['Leírás'] = ujleiras
-                    ujdatum = input(f"Add meg az új dátumot: ")
-                    if ujdatum.strip() == "":
-                        ujdatum = bejegyzesek['Dátum']
-                    bejegyzesek['Dátum'] = ujdatum
+                    if bejegyzesek['Lezárt'] == 'Zárt':
+                        print(f"{modositaskerdes} bejegyzés le van zárva, nem módosítható.")
+                        modositott = True
+                        break
+                    else:
+                        print(f"Címe: {bejegyzesek['Cím']}")
+                        print(f"Leírása: {bejegyzesek['Leírás']}")
+                        print(f"Dátuma: {bejegyzesek['Dátum']}")
+                        #Ellenörzés hogy nem semmit adtunk meg és új érték megadás
+                        ujcim = input(f"Add meg az új címet: ")
+                        if ujcim.strip() == "":
+                            ujcim = bejegyzesek['Cím']
+                        bejegyzesek['Cím'] = ujcim
+                        ujleiras = input(f"Add meg az új leírást: ")
+                        if ujleiras.strip() == "":
+                            ujleiras = bejegyzesek['Leírás']
+                        bejegyzesek['Leírás'] = ujleiras
+                        ujdatum = input(f"Add meg az új dátumot: ")
+                        if ujdatum.strip() == "":
+                            ujdatum = bejegyzesek['Dátum']
+                        bejegyzesek['Dátum'] = ujdatum
+                        print("A bejegyzés módosítva.")
             #Fájlba mentés
             with open('bejegyzesek.txt', 'w', encoding="utf-8") as kimenet:
                 for bejegyzesek in bejegyzéseklista:
-                    kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']}\n")
-            print("A bejegyzés módosítva.")
+                    kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']};{bejegyzesek['Lezárt']}\n")
+        #Bejegyzések lezárása módosítás ellen
+        elif bejegyzeskezelőkerdes == 4:
+            kiemelés("Bejegyzés Lezáró")
+            bejegyzéseklista = []
+            with open('bejegyzesek.txt', encoding="utf-8") as bemenet:
+                for sor in bemenet:
+                    bejegyzeselemek = sor.strip().split(';')
+                    if len(bejegyzeselemek) == 4:
+                        bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': bejegyzeselemek[3]}
+                    else:
+                        bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': 'Nem'}
+                    bejegyzéseklista.append(bejegyzesek)
+            print("Bejegyzések (cím szerint):")
+            for bejegyzesek in bejegyzéseklista:
+                print(f"- {bejegyzesek['Cím']} (Lezárt: {bejegyzesek['Lezárt']})")
+            lazarokerdes = input("Melyik bejegyzést szeretnéd lezárni?\nVálasz: ")
+            for bejegyzesek in bejegyzéseklista:
+                if bejegyzesek['Cím'] == lazarokerdes:
+                    if bejegyzesek['Lezárt'] == 'Zárt':
+                        print("Ez a bejegyzés már le van zárva!")
+                    else:
+                        bejegyzesek['Lezárt'] = 'Zárt'
+                        print(f"{lazarokerdes} bejegyzés lezárva.")
+                    break
+            with open('bejegyzesek.txt', 'w', encoding="utf-8") as kimenet:
+                for bejegyzesek in bejegyzéseklista:
+                    kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']};{bejegyzesek['Lezárt']}\n")
