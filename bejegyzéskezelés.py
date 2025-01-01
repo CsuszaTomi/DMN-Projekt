@@ -17,6 +17,11 @@ def bejelentkezes(felhasznalonev, jelszo):
         if bejelenkezes['Felhasználónév'] == felhasznalonev and bejelenkezes['Jelszó'] == jelszo:
             return True
     return False
+def regisztráció(felhasznalonev):
+    for bejelenkezes in bejelentkezések:
+        if bejelenkezes['Felhasználónév'] == felhasznalonev:
+            return True
+    return False
 #terminál törlése
 def terminaltorlo():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -43,20 +48,29 @@ else:
 if siker == 1:
     while True:
         kiemelés("Főmenü")
-        kerdes = int(input("Mit szeretnél csinálni?\nRegisztrálni (1)\nBejegyzésteket kezelni (2)\nVálasztás: "))
+        kerdes = input("Mit szeretnél csinálni?\nRegisztrálni (1)\nBejegyzésteket kezelni (2)\nVálasztás: ")
         #Regisztráció
-        if kerdes == 1:
+        if kerdes == "1":
             kiemelés("Regisztráció")
+            bejelentkezések = []
+            with open('bejeletkezések.txt') as bemenet:
+                for sor in bemenet:
+                    adatok = sor.strip().split(';')
+                    bejelenkezes = {'Felhasználónév': adatok[0], 'Jelszó': adatok[1]}
+                    bejelentkezések.append(bejelenkezes)
             felhasznaloreg = input("Add meg a felhasználó nevet: ")
             jelszoreg = input("Add meg a jelszót: ")
-            with open("bejeletkezések.txt", 'a') as kimenet:
-                regisztra = {'Felhasználónév': felhasznaloreg, 'Jelszó': jelszoreg}
-                kimenet.write(f"{regisztra['Felhasználónév']};{regisztra['Jelszó']}\n")
-            kiemelés("Sikeres regisztráció!")
+            if regisztráció(felhasznaloreg):
+                kiemelés("Ez a felhasználónév már regisztrált!")
+            elif regisztráció(felhasznaloreg) == False:
+                with open("bejeletkezések.txt", 'a') as kimenet:
+                    regisztra = {'Felhasználónév': felhasznaloreg, 'Jelszó': jelszoreg}
+                    kimenet.write(f"{regisztra['Felhasználónév']};{regisztra['Jelszó']}\n")
+                kiemelés("Sikeres regisztráció!")
             time.sleep(1)
         #Bejegyzések
         bejegyzeskezelőkerdes = 0
-        if kerdes == 2:
+        if kerdes == "2":
             kiemelés("Bejegyzés Kezelő")
             bejegyzeskezelőkerdes = int(input("Mit szeretnél csinálni a bejegyzésekkel?\nÚjjat írni(1)\nTörölni(2)\nMódosítani(3)\nLezárni(4)\nListázni(5)\nVálasztás: "))
             #Bejegyzések írása
@@ -206,3 +220,5 @@ if siker == 1:
                         print(f"- {bejegyzes['Cím']} (Lezárt: {bejegyzes['Lezárt']})")
                     time.sleep(2)    
         terminaltorlo()
+        if kerdes == "":
+            pass
