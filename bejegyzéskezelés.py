@@ -43,9 +43,9 @@ else:
 if siker == 1:
     while True:
         kiemelés("Főmenü")
-        kerdes = input("Mit szeretnél csinálni?\nRegisztrálni (r)\nBejegyzésteket kezelni (b)\nVálasztás: ")
+        kerdes = int(input("Mit szeretnél csinálni?\nRegisztrálni (1)\nBejegyzésteket kezelni (2)\nVálasztás: "))
         #Regisztráció
-        if kerdes == "r":
+        if kerdes == 1:
             kiemelés("Regisztráció")
             felhasznaloreg = input("Add meg a felhasználó nevet: ")
             jelszoreg = input("Add meg a jelszót: ")
@@ -53,9 +53,10 @@ if siker == 1:
                 regisztra = {'Felhasználónév': felhasznaloreg, 'Jelszó': jelszoreg}
                 kimenet.write(f"{regisztra['Felhasználónév']};{regisztra['Jelszó']}\n")
             kiemelés("Sikeres regisztráció!")
+            time.sleep(1)
         #Bejegyzések
         bejegyzeskezelőkerdes = 0
-        if kerdes == "b":
+        if kerdes == 2:
             kiemelés("Bejegyzés Kezelő")
             bejegyzeskezelőkerdes = int(input("Mit szeretnél csinálni a bejegyzésekkel?\nÚjjat írni(1)\nTörölni(2)\nMódosítani(3)\nLezárni(4)\nListázni(5)\nVálasztás: "))
             #Bejegyzések írása
@@ -68,6 +69,7 @@ if siker == 1:
                     kiiras = {'Cím': cim, 'Leírás': leiras, 'Dátum': datum}
                     bejegyzes.write(f"{kiiras['Cím']};{kiiras['Leírás']};{kiiras['Dátum']}\n")
                 kiemelés("Bejegyzés mentve!")
+                time.sleep(1)
             #Bejegyzések törlése
             elif bejegyzeskezelőkerdes == 2:
                 kiemelés("Bejegyzés Törlő")
@@ -92,6 +94,7 @@ if siker == 1:
                         for bejegyzesek in torlesilista:
                             kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']}\n")
                     kiemelés("A bejegyzés törölve.")
+                time.sleep(1)
             #Bejegyzések módosítása
             elif bejegyzeskezelőkerdes == 3:
                 kiemelés("Bejegyzés Módosító")
@@ -116,6 +119,7 @@ if siker == 1:
                             print(f"{modositaskerdes} bejegyzés le van zárva, nem módosítható.")
                             break
                         else:
+                            kiemelés(f"{modositaskerdes} módosítása")
                             print(f"Címe: {bejegyzesek['Cím']}")
                             print(f"Leírása: {bejegyzesek['Leírás']}")
                             print(f"Dátuma: {bejegyzesek['Dátum']}")
@@ -137,6 +141,7 @@ if siker == 1:
                 with open('bejegyzesek.txt', 'w', encoding="utf-8") as kimenet:
                     for bejegyzesek in bejegyzéseklista:
                         kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']};{bejegyzesek['Lezárt']}\n")
+                time.sleep(1)
             #Bejegyzések lezárása módosítás ellen
             elif bejegyzeskezelőkerdes == 4:
                 kiemelés("Bejegyzés Lezáró")
@@ -164,6 +169,8 @@ if siker == 1:
                 with open('bejegyzesek.txt', 'w', encoding="utf-8") as kimenet:
                     for bejegyzesek in bejegyzéseklista:
                         kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']};{bejegyzesek['Lezárt']}\n")
+                time.sleep(2)
+            #Listázási lehetőségek
             elif bejegyzeskezelőkerdes == 5:
                 kiemelés("Bejegyzés Listázó")
                 bejegyzéseklista = []
@@ -181,6 +188,7 @@ if siker == 1:
                     for bejegyzesek in bejegyzéseklista:     
                         if bejegyzesek['Lezárt'] == "Nem":
                             print(f"- {bejegyzesek['Cím']} (Lezárt: {bejegyzesek['Lezárt']})")
+                    time.sleep(2)
                 if listakerdes == 2:
                     ma = datetime.date.today()
                     hetelsonapja = ma - datetime.timedelta(days=ma.weekday())  # hétfő
@@ -190,9 +198,11 @@ if siker == 1:
                         bejegyzesdatum = datetime.datetime.strptime(bejegyzesek['Dátum'], '%Y.%m.%d').date()
                         if hetelsonapja <= bejegyzesdatum <= hetutolsonapja:
                             print(f"- {bejegyzesek['Cím']} (Dátum: {bejegyzesek['Dátum']})")
+                    time.sleep(2)    
                 elif listakerdes == 3:
                     print("Bejegyzések ABC sorrendben:")
                     rendezett_bejegyzesek = sorted(bejegyzéseklista, key=lambda x: x['Cím'])
                     for bejegyzes in rendezett_bejegyzesek:
                         print(f"- {bejegyzes['Cím']} (Lezárt: {bejegyzes['Lezárt']})")
-        time.sleep(3)        
+                    time.sleep(2)    
+        terminaltorlo()
