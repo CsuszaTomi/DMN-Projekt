@@ -35,20 +35,12 @@ with open('bejeletkezések.txt') as bemenet:
         adatok = sor.strip().split(';')
         bejelenkezes = {'Felhasználónév': adatok[0], 'Jelszó': adatok[1]}
         bejelentkezések.append(bejelenkezes)
-kiemelés("Üdvözlünk a rendszerben!")
-felhasznalonev = input("\nAdja meg a felhasználónevét: ")
-jelszo = input("Adja meg a jelszavát: ")
+kiemelés("Üdvözlünk a határidőnaplóban!")
 siker = 0
-if bejelentkezes(felhasznalonev, jelszo):
-    kiemelés("Sikeres bejelentkezés!")
-    siker = 1
-else:
-    kiemelés("Hibás felhasználónév vagy jelszó.")
-    siker = 0
-if siker == 1:
+if True:
     while True:
         kiemelés("Főmenü")
-        kerdes = input("Mit szeretnél csinálni?\nRegisztrálni (1)\nBejegyzésteket kezelni (2)\nVálasztás: ")
+        kerdes = input("Mit szeretnél csinálni?\nRegisztrálni(1)\nBejelentkezni(2)\nBejegyzésteket kezelni(3)\nVálasztás: ")
         #Regisztráció
         if kerdes == "1":
             kiemelés("Regisztráció")
@@ -68,9 +60,20 @@ if siker == 1:
                     kimenet.write(f"{regisztra['Felhasználónév']};{regisztra['Jelszó']}\n")
                 kiemelés("Sikeres regisztráció!")
             time.sleep(1)
+        if kerdes == "2":
+            kiemelés("Bejelentkezés")
+            felhasznalonev = input("\nAdja meg a felhasználónevét: ")
+            jelszo = input("Adja meg a jelszavát: ")
+            if bejelentkezes(felhasznalonev, jelszo):
+                kiemelés("Sikeres bejelentkezés!")
+                siker = 1
+            else:
+                kiemelés("Hibás felhasználónév vagy jelszó.")
+                siker = 0
+            time.sleep(2)
         #Bejegyzések
         bejegyzeskezelőkerdes = 0
-        if kerdes == "2":
+        if kerdes == "3" and siker == 1:
             kiemelés("Bejegyzés Kezelő")
             bejegyzeskezelőkerdes = int(input("Mit szeretnél csinálni a bejegyzésekkel?\nÚjjat írni(1)\nTörölni(2)\nMódosítani(3)\nLezárni(4)\nListázni(5)\nVálasztás: "))
             #Bejegyzések írása
@@ -150,7 +153,7 @@ if siker == 1:
                             if ujdatum.strip() == "":
                                 ujdatum = bejegyzesek['Dátum']
                             bejegyzesek['Dátum'] = ujdatum
-                            print("A bejegyzés módosítva.")
+                            kiemelés("A bejegyzés módosítva.")
                 #Fájlba mentés
                 with open('bejegyzesek.txt', 'w', encoding="utf-8") as kimenet:
                     for bejegyzesek in bejegyzéseklista:
@@ -175,10 +178,10 @@ if siker == 1:
                 for bejegyzesek in bejegyzéseklista:
                     if bejegyzesek['Cím'] == lazarokerdes:
                         if bejegyzesek['Lezárt'] == 'Zárt':
-                            print("Ez a bejegyzés már le van zárva!")
+                            kiemelés("Ez a bejegyzés már le van zárva!")
                         else:
                             bejegyzesek['Lezárt'] = 'Zárt'
-                            print(f"{lazarokerdes} bejegyzés lezárva.")
+                            kiemelés(f"{lazarokerdes} bejegyzés lezárva.")
                         break
                 with open('bejegyzesek.txt', 'w', encoding="utf-8") as kimenet:
                     for bejegyzesek in bejegyzéseklista:
@@ -212,13 +215,16 @@ if siker == 1:
                         bejegyzesdatum = datetime.datetime.strptime(bejegyzesek['Dátum'], '%Y.%m.%d').date()
                         if hetelsonapja <= bejegyzesdatum <= hetutolsonapja:
                             print(f"- {bejegyzesek['Cím']} (Dátum: {bejegyzesek['Dátum']})")
-                    time.sleep(2)    
+                    time.sleep(6)    
                 elif listakerdes == 3:
                     print("Bejegyzések ABC sorrendben:")
                     rendezett_bejegyzesek = sorted(bejegyzéseklista, key=lambda x: x['Cím'])
                     for bejegyzes in rendezett_bejegyzesek:
                         print(f"- {bejegyzes['Cím']} (Lezárt: {bejegyzes['Lezárt']})")
-                    time.sleep(2)    
+                    time.sleep(2) 
+        elif kerdes == "3" and siker == 0:
+            kiemelés("Nem vagy bejelentkezve!")   
+            time.sleep(2)
         terminaltorlo()
         if kerdes == "":
             pass
