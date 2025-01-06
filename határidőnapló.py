@@ -213,7 +213,7 @@ if True:
                         else:
                             bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': 'Nem'}
                         bejegyzéseklista.append(bejegyzesek)  
-                listakerdes = int(input("Mi alapján szeretnéd listázni a bejegyzéseket?\n-Elvégzendő feladatok, hátralévő bejegyzések(1)\n-Aktuális hét feladatai, bejegyzései(2)\n-ABC sorrend szerint(3)\nVálasztás: ")) 
+                listakerdes = int(input("Mi alapján szeretnéd listázni a bejegyzéseket?\n-Elvégzendő feladatok, hátralévő bejegyzések(1)\n-Aktuális hét feladatai, bejegyzései(2)\n-ABC sorrend szerint(3)\n-Összes bejegyzés kilistázása(4)\nVálasztás: ")) 
                 if listakerdes == 1:
                     print("Hátralévő bejegyzések:")
                     for bejegyzesek in bejegyzéseklista:     
@@ -236,6 +236,20 @@ if True:
                     for bejegyzes in rendezett_bejegyzesek:
                         print(f"- {bejegyzes['Cím']} (Lezárt: {bejegyzes['Lezárt']})")
                     time.sleep(2) 
+                elif listakerdes == 4:
+                    print("Összes bejegyzés:")
+                    bejegyzéseklista = []
+                    with open('bejegyzesek.txt', encoding="utf-8") as kimenet:
+                        for sor in kimenet:
+                            bejegyzeselemek = sor.strip().split(';')
+                            if len(bejegyzeselemek) == 4:
+                                bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': bejegyzeselemek[3]}
+                            else:
+                                bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': 'Nem'}
+                            bejegyzéseklista.append(bejegyzesek)
+                    for bejegyzesek in bejegyzéseklista:
+                        print(f"Cím: {bejegyzesek['Cím']}\nLeírás: {bejegyzesek['Leírás']}\nHatáridő: {bejegyzesek['Dátum']}")
+                    listakilepokerdes = input("Kilépésért nyomj egy entert: ")
         elif kerdes == "3" and siker == 0:
             kiemelés("Nem vagy bejelentkezve!")   
             time.sleep(2)
