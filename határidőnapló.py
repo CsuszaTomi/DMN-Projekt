@@ -45,7 +45,7 @@ siker = 0
 if True:
     while True:
         kiemelés("Főmenü")
-        kerdes = input("Mit szeretnél csinálni?\nRegisztrálni(1)\nBejelentkezni(2)\nBejegyzésteket kezelni(3)\nVálasztás: ")
+        kerdes = input("Mit szeretnél csinálni?\nRegisztrálni(1)\nBejelentkezni(2)\nBejegyzésteket kezelni(3)\nKilépni(4)\nVálasztás: ")
         #Regisztráció
         if kerdes == "1":
             kiemelés("Regisztráció")
@@ -239,6 +239,9 @@ if True:
         elif kerdes == "3" and siker == 0:
             kiemelés("Nem vagy bejelentkezve!")   
             time.sleep(2)
+        elif kerdes == "4":
+            kiemelés("Viszlát!")
+            break
         terminaltorlo()
         if kerdes == "":
             pass
