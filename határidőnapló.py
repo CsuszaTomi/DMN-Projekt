@@ -33,6 +33,12 @@ if not os.path.exists("bejeletkezések.txt"):
         pass  
 else:
     pass
+#Bejegyzések fájl legenerálása
+if not os.path.exists("bejegyzesek.txt"):
+    with open("bejegyzesek.txt", 'w') as file:
+        pass  
+else:
+    pass
 #Lista amibe a bejelentkezéseket tároljuk a fájlból kiszedés után
 bejelentkezések = []
 with open('bejeletkezések.txt') as bemenet:
@@ -84,7 +90,7 @@ if True:
                 else:
                     kiemelés("Hibás felhasználónév vagy jelszó.")
                     siker = 0
-            time.sleep(2)
+            time.sleep(1)
         #Bejegyzések
         bejegyzeskezelőkerdes = 0
         if kerdes == "3" and siker == 1:
