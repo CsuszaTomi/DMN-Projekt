@@ -71,6 +71,7 @@ if True:
                     kimenet.write(f"{regisztra['Felhasználónév']};{regisztra['Jelszó']}\n")
                 kiemelés("Sikeres regisztráció!")
             time.sleep(1)
+        #Bejelentkezés
         if kerdes == "2":
             bejelentkezések = []
             with open('bejeletkezések.txt') as bemenet:
@@ -95,7 +96,7 @@ if True:
         bejegyzeskezelőkerdes = 0
         if kerdes == "3" and siker == 1:
             kiemelés("Bejegyzés Kezelő")
-            bejegyzeskezelőkerdes = int(input("Mit szeretnél csinálni a bejegyzésekkel?\nÚjjat írni(1)\nTörölni(2)\nMódosítani(3)\nLezárni(4)\nListázni(5)\nVálasztás: "))
+            bejegyzeskezelőkerdes = int(input("Mit szeretnél csinálni a bejegyzésekkel?\nÚjjat írni(1)\nTörölni(2)\nMódosítani(3)\nKészre Állítás(4)\nListázni(5)\nVálasztás: "))
             #Bejegyzések írása
             if bejegyzeskezelőkerdes == 1:
                 kiemelés("Bejegyzés írása")
@@ -153,7 +154,7 @@ if True:
                 for bejegyzesek in bejegyzéseklista:
                     if bejegyzesek['Cím'] == modositaskerdes:
                         if bejegyzesek['Lezárt'] == 'Zárt':
-                            print(f"{modositaskerdes} bejegyzés le van zárva, nem módosítható.")
+                            print(f"{modositaskerdes} bejegyzés már készre van állítva, nem módosítható.")
                             break
                         else:
                             kiemelés(f"{modositaskerdes} módosítása")
@@ -198,10 +199,10 @@ if True:
                 for bejegyzesek in bejegyzéseklista:
                     if bejegyzesek['Cím'] == lazarokerdes:
                         if bejegyzesek['Lezárt'] == 'Zárt':
-                            kiemelés("Ez a bejegyzés már le van zárva!")
+                            kiemelés("Ez a bejegyzés már készre van állítva!")
                         else:
                             bejegyzesek['Lezárt'] = 'Zárt'
-                            kiemelés(f"{lazarokerdes} bejegyzés lezárva.")
+                            kiemelés(f"{lazarokerdes} bejegyzés készre állítva.")
                         break
                 with open('bejegyzesek.txt', 'w', encoding="utf-8") as kimenet:
                     for bejegyzesek in bejegyzéseklista:
