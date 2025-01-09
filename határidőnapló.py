@@ -71,7 +71,6 @@ if True:
                     kimenet.write(f"{regisztra['Felhasználónév']};{regisztra['Jelszó']}\n")
                 kiemelés("Sikeres regisztráció!")
             time.sleep(1)
-        #Bejelentkezés
         if kerdes == "2":
             bejelentkezések = []
             with open('bejeletkezések.txt') as bemenet:
@@ -96,7 +95,7 @@ if True:
         bejegyzeskezelőkerdes = 0
         if kerdes == "3" and siker == 1:
             kiemelés("Bejegyzés Kezelő")
-            bejegyzeskezelőkerdes = int(input("Mit szeretnél csinálni a bejegyzésekkel?\nÚjjat írni(1)\nTörölni(2)\nMódosítani(3)\nKészre Állítás(4)\nListázni(5)\nVálasztás: "))
+            bejegyzeskezelőkerdes = int(input("Mit szeretnél csinálni a bejegyzésekkel?\nÚjjat írni(1)\nTörölni(2)\nMódosítani(3)\nLezárni(4)\nListázni(5)\nVálasztás: "))
             #Bejegyzések írása
             if bejegyzeskezelőkerdes == 1:
                 kiemelés("Bejegyzés írása")
@@ -141,27 +140,27 @@ if True:
                     for sor in kimenet:
                         bejegyzeselemek = sor.strip().split(';')
                         if len(bejegyzeselemek) == 4:
-                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': bejegyzeselemek[3]}
+                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Állapot': bejegyzeselemek[3]}
                         else:
-                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': 'Nem'}
+                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Állapot': 'Folyamatban'}
                         bejegyzéseklista.append(bejegyzesek)
                 #Bejegyzés címek kíírása
                 print("Bejegyzések(cím szerint):")
                 for bejegyzesek in bejegyzéseklista:
-                    print(f"- {bejegyzesek['Cím']} (Lezárt: {bejegyzesek['Lezárt']})")
+                    print(f"- {bejegyzesek['Cím']} (Állapot: {bejegyzesek['Állapot']})")
                 modositaskerdes = input("Melyik bejegyzést szeretnéd módosítani?\nVálasz: ")
                 #Cím szerint kiválasztott bejegyzés módosítása
                 for bejegyzesek in bejegyzéseklista:
                     if bejegyzesek['Cím'] == modositaskerdes:
-                        if bejegyzesek['Lezárt'] == 'Zárt':
-                            print(f"{modositaskerdes} bejegyzés már készre van állítva, nem módosítható.")
+                        if bejegyzesek['Állapot'] == 'Kész':
+                            print(f"{modositaskerdes} bejegyzés le van zárva, nem módosítható.")
                             break
                         else:
                             kiemelés(f"{modositaskerdes} módosítása")
                             print(f"Címe: {bejegyzesek['Cím']}")
                             print(f"Leírása: {bejegyzesek['Leírás']}")
                             print(f"Dátuma: {bejegyzesek['Dátum']}")
-                            #Ellenörzés hogy nem semmit adtunk meg és új érték megadás
+                            #Ellenörzés hogy Folyamatban semmit adtunk meg és új érték megadás
                             ujcim = input(f"Add meg az új címet: ")
                             if ujcim.strip() == "":
                                 ujcim = bejegyzesek['Cím']
@@ -178,7 +177,7 @@ if True:
                 #Fájlba mentés
                 with open('bejegyzesek.txt', 'w', encoding="utf-8") as kimenet:
                     for bejegyzesek in bejegyzéseklista:
-                        kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']};{bejegyzesek['Lezárt']}\n")
+                        kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']};{bejegyzesek['Állapot']}\n")
                 time.sleep(1)
             #Bejegyzések lezárása módosítás ellen
             elif bejegyzeskezelőkerdes == 4:
@@ -188,25 +187,25 @@ if True:
                     for sor in bemenet:
                         bejegyzeselemek = sor.strip().split(';')
                         if len(bejegyzeselemek) == 4:
-                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': bejegyzeselemek[3]}
+                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Állapot': bejegyzeselemek[3]}
                         else:
-                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': 'Nem'}
+                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Állapot': 'Folyamatban'}
                         bejegyzéseklista.append(bejegyzesek)
                 print("Bejegyzések (cím szerint):")
                 for bejegyzesek in bejegyzéseklista:
-                    print(f"- {bejegyzesek['Cím']} (Lezárt: {bejegyzesek['Lezárt']})")
-                lazarokerdes = input("Melyik bejegyzést szeretnéd lezárni?\nVálasz: ")
+                    print(f"- {bejegyzesek['Cím']} (Állapot: {bejegyzesek['Állapot']})")
+                lazarokerdes = input("Melyik bejegyzést szeretnéd készre állítani?\nVálasz: ")
                 for bejegyzesek in bejegyzéseklista:
                     if bejegyzesek['Cím'] == lazarokerdes:
-                        if bejegyzesek['Lezárt'] == 'Zárt':
+                        if bejegyzesek['Állapot'] == 'Kész':
                             kiemelés("Ez a bejegyzés már készre van állítva!")
                         else:
-                            bejegyzesek['Lezárt'] = 'Zárt'
+                            bejegyzesek['Állapot'] = 'Kész'
                             kiemelés(f"{lazarokerdes} bejegyzés készre állítva.")
                         break
                 with open('bejegyzesek.txt', 'w', encoding="utf-8") as kimenet:
                     for bejegyzesek in bejegyzéseklista:
-                        kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']};{bejegyzesek['Lezárt']}\n")
+                        kimenet.write(f"{bejegyzesek['Cím']};{bejegyzesek['Leírás']};{bejegyzesek['Dátum']};{bejegyzesek['Állapot']}\n")
                 time.sleep(2)
             #Listázási lehetőségek
             elif bejegyzeskezelőkerdes == 5:
@@ -216,16 +215,16 @@ if True:
                     for sor in bemenet:
                         bejegyzeselemek = sor.strip().split(';')
                         if len(bejegyzeselemek) == 4:
-                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': bejegyzeselemek[3]}
+                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Állapot': bejegyzeselemek[3]}
                         else:
-                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': 'Nem'}
+                            bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Állapot': 'Folyamatban'}
                         bejegyzéseklista.append(bejegyzesek)  
-                listakerdes = int(input("Mi alapján szeretnéd listázni a bejegyzéseket?\n-Elvégzendő feladatok, hátralévő bejegyzések(1)\n-Aktuális hét feladatai, bejegyzései(2)\n-ABC sorrend szerint(3)\n-Összes bejegyzés kilistázása(4)\nVálasztás: ")) 
+                listakerdes = int(input("Mi alapján szeretnéd listázni a bejegyzéseket?\n-Elvégzendő feladatok, hátralévő bejegyzések(1)\n-Aktuális hét feladatai, bejegyzései(2)\n-ABC sorrend szerint(3)\n-Adott bejegyzés kilistázása(4)\nVálasztás: ")) 
                 if listakerdes == 1:
                     print("Hátralévő bejegyzések:")
                     for bejegyzesek in bejegyzéseklista:     
-                        if bejegyzesek['Lezárt'] == "Nem":
-                            print(f"- {bejegyzesek['Cím']} (Lezárt: {bejegyzesek['Lezárt']})")
+                        if bejegyzesek['Állapot'] == "Folyamatban":
+                            print(f"- {bejegyzesek['Cím']} (Állapot: {bejegyzesek['Állapot']})")
                     time.sleep(2)
                 if listakerdes == 2:
                     ma = datetime.date.today()
@@ -241,7 +240,7 @@ if True:
                     print("Bejegyzések ABC sorrendben:")
                     rendezett_bejegyzesek = sorted(bejegyzéseklista, key=lambda x: x['Cím'])
                     for bejegyzes in rendezett_bejegyzesek:
-                        print(f"- {bejegyzes['Cím']} (Lezárt: {bejegyzes['Lezárt']})")
+                        print(f"- {bejegyzes['Cím']} (Állapot: {bejegyzes['Állapot']})")
                     time.sleep(2) 
                 elif listakerdes == 4:
                     print("Összes bejegyzés:")
@@ -250,12 +249,17 @@ if True:
                         for sor in kimenet:
                             bejegyzeselemek = sor.strip().split(';')
                             if len(bejegyzeselemek) == 4:
-                                bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': bejegyzeselemek[3]}
+                                bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Állapot': bejegyzeselemek[3]}
                             else:
-                                bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Lezárt': 'Nem'}
+                                bejegyzesek = {'Cím': bejegyzeselemek[0], 'Leírás': bejegyzeselemek[1], 'Dátum': bejegyzeselemek[2], 'Állapot': 'Folyamatban'}
                             bejegyzéseklista.append(bejegyzesek)
                     for bejegyzesek in bejegyzéseklista:
-                        print(f"Cím: {bejegyzesek['Cím']}\nLeírás: {bejegyzesek['Leírás']}\nHatáridő: {bejegyzesek['Dátum']}")
+                        print(f"- {bejegyzesek['Cím']}")
+                    bejegyzeskiirokerdes = input("Melyik bejegyzést szeretnéd elolvasni?\nVálasz: ")
+                    for bejegyzesek in bejegyzéseklista:
+                        if bejegyzesek['Cím'] == bejegyzeskiirokerdes:
+                            kiemelés(f"{bejegyzeskiirokerdes} bejegyzés")
+                            print(f"Leírás: {bejegyzesek['Leírás']}\nHatáridő: {bejegyzesek['Dátum']}\nÁllapot: {bejegyzesek["Állapot"]}\n")
                     listakilepokerdes = input("Kilépésért nyomj egy entert: ")
         elif kerdes == "3" and siker == 0:
             kiemelés("Nem vagy bejelentkezve!")   
