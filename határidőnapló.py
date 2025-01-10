@@ -259,7 +259,7 @@ if True:
                     for bejegyzesek in bejegyzéseklista:
                         if bejegyzesek['Cím'] == bejegyzeskiirokerdes:
                             kiemelés(f"{bejegyzeskiirokerdes} bejegyzés")
-                            print(f"Leírás: {bejegyzesek['Leírás']}\nHatáridő: {bejegyzesek['Dátum']}\nÁllapot: {bejegyzesek["Állapot"]}\n")
+                            print(f"Leírás: {bejegyzesek['Leírás']}\nHatáridő: {bejegyzesek['Dátum']}\nÁllapot: {bejegyzesek['Állapot']}\n")
                     listakilepokerdes = input("Kilépésért nyomj egy entert: ")
         elif kerdes == "3" and siker == 0:
             kiemelés("Nem vagy bejelentkezve!")   
